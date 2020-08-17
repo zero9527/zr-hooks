@@ -5,18 +5,19 @@ const { spawn } = require('child_process');
 
 function deleteFile(filepath) {
   if (!fs.existsSync(filepath)) return;
+
   if (isDirectory(filepath)) {
     const file = fs.readdirSync(filepath);
+
     file.forEach((item) => {
-      const fileWithPath = `${filepath}/${item}`;
-      console.log(fileWithPath);
-      if (isDirectory(fileWithPath)) {
-        deleteFile(fileWithPath);
-      } else {
-        fs.unlinkSync(fileWithPath);
-      }
+      const itemPath = `${filepath}/${item}`;
+      if (isDirectory(itemPath)) deleteFile(itemPath);
+      else fs.unlinkSync(itemPath);
     });
-    fs.rmdirSync(filepath);
+
+    if (!fs.readdirSync(filepath).length) {
+      fs.rmdirSync(filepath);
+    }
   } else {
     fs.unlinkSync(filepath);
   }
@@ -49,4 +50,9 @@ function copyFile(from, to) {
   fs.writeFileSync(to, fs.readFileSync(from));
 }
 
-module.exports = { deleteFile, isDirectory, runCommand, copyFile };
+module.exports = {
+  deleteFile,
+  isDirectory,
+  runCommand,
+  copyFile,
+};

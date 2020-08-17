@@ -6,6 +6,7 @@ import { useCallback } from 'react';
  * @param callbackStart {*} 是否首次执行回调
  */
 const useDebounce = (callback, delay = 16, callbackStart = true) => {
+    // TODO: 区分开两种逻辑
     let _callbackStart = callbackStart; // 是否首次执行回调
     let timer;
     let lastTime = 0;
@@ -13,15 +14,17 @@ const useDebounce = (callback, delay = 16, callbackStart = true) => {
         if (_callbackStart) {
             _callbackStart = false;
             callback.apply(null, args);
+            return;
         }
         if (timer)
             clearTimeout(timer);
         timer = setTimeout(() => {
             callback.apply(null, args);
-            _callbackStart = true;
+            if (callbackStart)
+                _callbackStart = true;
         }, delay);
     };
-    return useCallback(function (...args) {
+    return useCallback((...args) => {
         const thisTime = new Date().getTime();
         if (thisTime - lastTime > delay && lastTime !== 0) {
             lastTime = 0;

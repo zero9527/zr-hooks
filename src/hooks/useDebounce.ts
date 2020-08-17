@@ -9,26 +9,28 @@ import { UseDebounce } from '../index.d';
  */
 const useDebounce: UseDebounce = (
   callback,
-  delay = 16,
-  callbackStart = true
+  delay = 16
+  // callbackStart = true
 ) => {
-  let _callbackStart = callbackStart; // 是否首次执行回调
+  // TODO: 区分开两种逻辑
+  // let _callbackStart = callbackStart; // 是否首次执行回调
   let timer: NodeJS.Timeout;
   let lastTime: number = 0;
 
   const runCallback = (...args: any) => {
-    if (_callbackStart) {
-      _callbackStart = false;
-      callback.apply(null, args);
-    }
+    // if (_callbackStart) {
+    //   _callbackStart = false;
+    //   callback.apply(null, args);
+    //   return;
+    // }
     if (timer) clearTimeout(timer);
     timer = setTimeout(() => {
       callback.apply(null, args);
-      _callbackStart = true;
+      // if (callbackStart) _callbackStart = true;
     }, delay);
   };
 
-  return useCallback(function (...args) {
+  return useCallback((...args) => {
     const thisTime = new Date().getTime();
     if (thisTime - lastTime > delay && lastTime !== 0) {
       lastTime = 0;

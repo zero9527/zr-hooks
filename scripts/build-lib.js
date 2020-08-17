@@ -5,10 +5,13 @@ const { deleteFile, runCommand, copyFile } = require('./utils');
 
 const cwd = process.cwd();
 
+process.on('uncaughtException', () => process.exit(1));
+process.on('unhandledRejection', () => process.exit(2));
+
 // 删除 dist
-const deleteOra = ora('正在删除：dist...\n').start();
+const deleteOra = ora('正在删除：/dist ...\n').start();
 deleteFile(cwd + '/dist');
-deleteOra.succeed('dist 删除完成！\n');
+deleteOra.succeed('/dist 删除完成！\n');
 
 // ts编译成js
 const builldOra = ora('正在将ts编译成js...').start();

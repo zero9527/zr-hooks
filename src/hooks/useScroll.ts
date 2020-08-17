@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import usePrevState from './usePrevState';
-import { UseScroll, UseScrollReturns } from '../index.d';
+import { UseScrollReturns } from '../index.d';
 
 /**
  * 监听window滚动
@@ -8,7 +8,7 @@ import { UseScroll, UseScrollReturns } from '../index.d';
  * @example
  * const [prevScrollTop, scrollTop] = useScroll()
  */
-const useScroll: UseScroll = (): UseScrollReturns => {
+function useScroll(): UseScrollReturns {
   const [scrollTop, setScrollTop] = useState(0);
   const prevScrollTop = usePrevState(scrollTop);
 
@@ -31,6 +31,6 @@ const useScroll: UseScroll = (): UseScrollReturns => {
   };
 
   return [prevScrollTop, scrollTop];
-};
+}
 
 export default useScroll;
